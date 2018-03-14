@@ -28,7 +28,7 @@ target/
 *.diff
 *.patch
 *.tmp
-
+#https://github.com/studyhuang1996/shop_learning.git
 #system ignore
 .DS_Store
 Thumbs.db
