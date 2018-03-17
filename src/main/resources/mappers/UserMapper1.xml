@@ -66,10 +66,10 @@
         role,
       </if>
       <if test="createTime != null" >
-        create_time,
+        now(),
       </if>
       <if test="updateTime != null" >
-        update_time,
+        now(),
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides="," >
@@ -98,10 +98,10 @@
         #{role,jdbcType=INTEGER},
       </if>
       <if test="createTime != null" >
-        now(),
+        #{createTime,jdbcType=TIMESTAMP},
       </if>
       <if test="updateTime != null" >
-        now(),
+        #{updateTime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -151,67 +151,50 @@
       update_time = now()
     where id = #{id,jdbcType=INTEGER}
   </update>
-  
-  
-  <select id="checkName" resultType="int" parameterType="string" >
-    select count(1) from mmall_user
-    where username = #{username}
+
+  <select id="checkName" parameterType="string" resultType="int">
+   SELECT COUNT(1) FORM mmall_user
+   WHERE username =#{username,jdbcType=VARCHAR}
   </select>
 
-  <select id="checkEmail" resultType="int" parameterType="string" >
-    select count(1) from mmall_user
-    where email = #{email}
+  <select id="checkEmail" parameterType="string" resultType="int">
+    SELECT COUNT(1) FORM mmall_user
+    WHERE email =#{email,jdbcType=VARCHAR}
   </select>
-
-
-  <select id="login" resultMap="BaseResultMap" parameterType="map">
-    SELECT
-    <include refid="Base_Column_List" />
-    from mmall_user
-    where username = #{username}
-    and password = #{password}
+  <select id="selectQuestionByUserName" parameterType="string" resultType="string">
+    SELECT question FORM mmall_user
+    WHERE username = #{username}
   </select>
-
-
-  <select id="selectQuestionByUserName" resultType="string" parameterType="string">
-    select
-    question
-    from mmall_user
-    where username = #{username}
-  </select>
-
-  <select id="checkAnswer" resultType="int" parameterType="map">
-    SELECT
-    count(1)
-    from mmall_user
-    where username=#{username}
-    and question = #{question}
+  updatePassword<select id="checkAnswer" parameterType="map" resultType="int">
+    SELECT count(1) FORM mmall_user
+    WHERE username = #{username}
+    and question= #{question}
     and answer = #{answer}
   </select>
 
-  <update id="updatePassword" parameterType="map">
-    update mmall_user
-    SET password = #{passwordNew},update_time = now()
-    where username = #{username}
+  <select id="login" parameterType="map" resultMap="BaseResultMap">
+  SELECT
+  <include refid="Base_Column_List" />
+   FROM  mmal_user
+    WHERE  username = #{username}
+    and password = #{password};
+  </select>
+
+  <update id="updatePassword" parameterType="map" >
+     UPDATE  mmal_user
+     SET  password = #{pwdmd5}, update_time = now()
+     where username = #{username};
   </update>
-
-  <select id="updateOldPassword" resultType="int" parameterType="map">
-    SELECT
-    count(1)
-    from mmall_user
-    where password = #{password}
-    and id = #{user_id}
+    <select id="updateOldPassword" parameterType="map" resultType="int">
+        SELECT  COUNT(1)
+        FROM  mmal_user
+        WHERE id = #{user_id};
   </select>
-
-
-  <select id="selectEmial" resultType="int" parameterType="map">
-    select count(1) from mmall_user
-    where email = #{email}
-    and id != #{userId}
-  </select>
-
-
-
-
-
+  <!--<parameterMap id="user_id" type="string"></parameterMap>-->
+    <select id="selectEmial" parameterType="map" resultType="int" >
+        SELECT  COUNT(1)
+        FROM  mmal_user
+        WHERE id != #{id}
+        and email = #{email};
+    </select>
 </mapper>
