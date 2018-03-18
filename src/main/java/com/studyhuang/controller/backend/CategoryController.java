@@ -7,10 +7,11 @@ import com.studyhuang.pojo.Category;
 import com.studyhuang.pojo.User;
 import com.studyhuang.service.CategoryService;
 import com.studyhuang.service.IUserService;
-import org.apache.ibatis.annotations.Param;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -21,7 +22,7 @@ import java.util.List;
  * 分类管理
  * Created by huang on 2018/3/17.
  */
-@RequestMapping("manager/category/")
+@RequestMapping("/admin/category")
 @Controller
 public class CategoryController {
 
@@ -32,7 +33,8 @@ public class CategoryController {
     private CategoryService categoryService;
 
 
-    @RequestMapping("save.do")
+
+    @RequestMapping(value = "save.do",method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse<String> saveCategory(HttpSession session , String categoryName,
                                                @RequestParam(value = "parentId",defaultValue ="0" ) Integer parentId ){
@@ -54,7 +56,7 @@ public class CategoryController {
     }
 
 
-    @RequestMapping("updateName.do")
+    @RequestMapping(value = "updateName.do",method = RequestMethod.POST)
     @ResponseBody
     public  ServerResponse updateCategoryName(HttpSession session,Integer categoryId,String categoryName){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
@@ -74,8 +76,10 @@ public class CategoryController {
      * @param session
      * @param categoryId
      * @return
+     *
      */
-    @RequestMapping("get.do")
+
+    @RequestMapping(value = "get.do" ,method = RequestMethod.POST)
     @ResponseBody
     public ServerResponse  getCategory(HttpSession session,
                                             @RequestParam(value = "categoryId" ,defaultValue = "0") Integer categoryId){

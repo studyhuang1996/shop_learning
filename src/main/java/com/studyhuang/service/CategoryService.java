@@ -21,5 +21,5 @@ public interface CategoryService {
 
     ServerResponse<List<Category>> getCategory(Integer categoryId);
 
-    ServerResponse selectCategoryById(Integer id);
+    ServerResponse<List<Integer>> selectCategoryById(Integer id);
 }
